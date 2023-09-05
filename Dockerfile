@@ -24,6 +24,9 @@ WORKDIR /app
 COPY --from=movie-service-builder /app/movie-service /app/movie-service
 COPY --from=cast-service-builder /app/cast-service /app/cast-service
 
+# Install Uvicorn
+RUN pip install uvicorn
+
 # Expose any ports needed by your services (adjust as necessary)
 EXPOSE 8000
 
