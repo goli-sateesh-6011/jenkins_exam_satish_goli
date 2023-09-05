@@ -1,13 +1,14 @@
 pipeline {
     environment {
         DOCKER_ID = "satishgoli6011" 
-        DOCKER_IMAGE = "kubernes"
+        DOCKER_IMAGE = "Kubernes"
         DOCKER_TAG = "v.${BUILD_ID}.0"
     }
     agent any
     stages {
         stage('Checkout') {
             steps {
+                // Check out your project from your Git repository
                 checkout scm
             }
         }
@@ -72,10 +73,7 @@ pipeline {
                     mkdir .kube
                     ls
                     cat $KUBECONFIG > .kube/config
-                    cp kubernetes/dev/values.yaml values.yml
-                    cat values.yml
-                    sed -i "s+tag.*+tag: ${DOCKER_TAG}+g" values.yml
-                    helm upgrade --install app kubernetes/dev --values=values.yml --namespace dev
+                    kubectl apply -f kubernetes/dev/
                     '''
                 }
             }
@@ -92,10 +90,7 @@ pipeline {
                     mkdir .kube
                     ls
                     cat $KUBECONFIG > .kube/config
-                    cp kubernetes/qa/values.yaml values.yml
-                    cat values.yml
-                    sed -i "s+tag.*+tag: ${DOCKER_TAG}+g" values.yml
-                    helm upgrade --install app kubernetes/qa --values=values.yml --namespace QA
+                    kubectl apply -f kubernetes/qa/
                     '''
                 }
             }
@@ -112,10 +107,7 @@ pipeline {
                     mkdir .kube
                     ls
                     cat $KUBECONFIG > .kube/config
-                    cp kubernetes/staging/values.yaml values.yml
-                    cat values.yml
-                    sed -i "s+tag.*+tag: ${DOCKER_TAG}+g" values.yml
-                    helm upgrade --install app kubernetes/staging --values=values.yml --namespace staging
+                    kubectl apply -f kubernetes/staging/
                     '''
                 }
             }
@@ -135,10 +127,7 @@ pipeline {
                     mkdir .kube
                     ls
                     cat $KUBECONFIG > .kube/config
-                    cp kubernetes/prod/values.yaml values.yml
-                    cat values.yml
-                    sed -i "s+tag.*+tag: ${DOCKER_TAG}+g" values.yml
-                    helm upgrade --install app kubernetes/prod --values=values.yml --namespace prod
+                    kubectl apply -f kubernetes/prod/
                     '''
                 }
             }
