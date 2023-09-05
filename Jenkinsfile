@@ -1,7 +1,7 @@
 pipeline {
     environment {
         DOCKER_ID = "satishgoli6011" 
-        DOCKER_IMAGE = "Kubernes"
+        DOCKER_IMAGE = "kubernes"
         DOCKER_TAG = "v.${BUILD_ID}.0"
     }
     agent any
@@ -17,7 +17,7 @@ pipeline {
             steps {
                 script {
                     sh '''
-                    docker rm -f jenkins
+                    docker rm -f jenkins || true
                     docker build -t $DOCKER_ID/$DOCKER_IMAGE:$DOCKER_TAG .
                     sleep 6
                     '''
